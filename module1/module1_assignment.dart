@@ -5,22 +5,17 @@ void main() {
   print('a = $a, b = $b');
 
   // Addition
-  int sum = a + b;
-  print('Addition: $a + $b = $sum');
+  print('Addition: $a + $b = ${a + b}');
 
   // Subtraction
-  int difference = a - b;
-  print('Subtraction: $a - $b = $difference');
+  print('Subtraction: $a - $b = ${a - b}');
 
   // Multiplication
-  int product = a * b;
-  print('Multiplication: $a * $b = $product');
+  print('Multiplication: $a * $b = ${a * b}');
 
   // Division
-  double quotient = a / b; // Use double to get decimal value for division
-  print('Division: $a / $b = $quotient');
+  print('Division: $a / $b = ${a / b}');
 
   // Modulus
-  int remainder = a % b;
-  print('Modulus: $a % $b = $remainder');
+  print('Modulus: $a % $b = ${a % b}');
 }
