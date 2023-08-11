@@ -1,6 +1,6 @@
 void main() {
   // Given grades
-  const List<int> grades = [85, 93, 78, 65, 88, 72];
+  const List<int> grades = [85, 92, 78, 65, 88, 72];
 
   // Calculating average grade
   int totalGrade = 0;
