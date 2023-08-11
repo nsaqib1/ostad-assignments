@@ -11,7 +11,7 @@ void main() {
   final int roundedAverageGrade = averageGrade.round();
 
   // Printing result
-  print('Student\'s average grade: ${averageGrade.toStringAsFixed(2)}');
+  print('Student\'s average grade: ${averageGrade.toStringAsFixed(1)}');
   print('Rounded average: $roundedAverageGrade');
 
   if (roundedAverageGrade >= 70) {
