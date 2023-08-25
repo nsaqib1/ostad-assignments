@@ -1,11 +1,11 @@
 abstract class Account {
-  final int _accountNumber;
-  double _balance;
+  final int accountNumber;
+  double balance;
 
-  Account(this._accountNumber, this._balance);
+  Account(this.accountNumber, this.balance);
 
   void deposit(double amount) {
-    _balance += amount;
+    balance += amount;
   }
 
   void withdraw(double amount);
@@ -18,9 +18,9 @@ class SavingsAccount extends Account {
 
   @override
   void withdraw(double amount) {
-    if (amount > _balance) return;
-    _balance -= amount;
-    _balance += _balance * (interestRate / 100);
+    if (amount > balance) return;
+    balance -= amount;
+    balance += balance * (interestRate / 100);
   }
 }
 
@@ -31,8 +31,8 @@ class CurrentAccount extends Account {
 
   @override
   void withdraw(double amount) {
-    if (amount <= _balance + overdraftLimit) {
-      _balance -= amount;
+    if (amount <= balance + overdraftLimit) {
+      balance -= amount;
     } else {
       print('Insufficient funds.');
     }
@@ -41,30 +41,65 @@ class CurrentAccount extends Account {
 
 void main() {
   // Create a SavingsAccount instance with an interest Rate of 8%
-  final int accountNumber = 12345;
-  final double intialBalance = 1000;
-  final double interestRate = 8;
+  final int savingsAccountNumber = 12345;
+  final double savingsAccountIntialBalance = 1000;
+  final double savingsAccountInterestRate = 8;
 
-  SavingsAccount savingsAccount = SavingsAccount(
-    accountNumber,
-    intialBalance,
-    interestRate,
+  final SavingsAccount savingsAccount = SavingsAccount(
+    savingsAccountNumber,
+    savingsAccountIntialBalance,
+    savingsAccountInterestRate,
   );
 
-  savingsAccount.deposit(500);
-  savingsAccount.withdraw(200);
+  print("Savings Account - account no: ${savingsAccount.accountNumber}");
+
+  // Deposit operation on savings account instance
+  final double savingAccountDepositAmount = 500;
+  savingsAccount.deposit(savingAccountDepositAmount);
+  print(
+    "After deposit (${savingAccountDepositAmount}): current balance: ${savingsAccount.balance}",
+  );
+
+  // Withdraw operation on savings account instance
+  final double savingAccountWithdrawAmount = 200;
+  savingsAccount.withdraw(savingAccountWithdrawAmount);
+  print(
+    "After withdraw (${savingAccountWithdrawAmount}): current balance: ${savingsAccount.balance}\n",
+  );
 
   // Create a CurrentAccount instance with overdraft limit of 1000
-  final int accountNumber2 = 67890;
-  final double initialBalance2 = 2000;
-  final double overdraftLimit = 1000;
+  final int currentAccountNumber = 67890;
+  final double currentAccountInitialBalance = 2000;
+  final double currentAccountOverdraftLimit = 1000;
 
-  CurrentAccount currentAccount = CurrentAccount(
-    accountNumber2,
-    initialBalance2,
-    overdraftLimit,
+  final CurrentAccount currentAccount = CurrentAccount(
+    currentAccountNumber,
+    currentAccountInitialBalance,
+    currentAccountOverdraftLimit,
   );
 
-  currentAccount.deposit(800);
-  currentAccount.withdraw(3000);
+  print("Current Account - account number: ${currentAccount.accountNumber}");
+
+  // Deposit operation on current account instance
+  final double currentAccountDepositAmount = 800;
+  currentAccount.deposit(currentAccountDepositAmount);
+  print(
+    "After deposit (${currentAccountDepositAmount}): current balance: ${currentAccount.balance}",
+  );
+
+  // Withdraw operation on current account instance
+  final double currentAccountWithdrawAmount = 3000;
+  currentAccount.withdraw(currentAccountWithdrawAmount);
+  print(
+    "After withdraw (${currentAccountWithdrawAmount}): current balance: ${currentAccount.balance}",
+  );
+
+// FINAL OUTPUT
+// Savings Account - account no: 12345
+// After deposit (500.0): current balance: 1500.0
+// After withdraw (200.0): current balance: 1404.0
+
+// Current Account - account number: 67890
+// After deposit (800.0): current balance: 2800.0
+// After withdraw (3000.0): current balance: -200.0
 }
