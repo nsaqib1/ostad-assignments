@@ -54,17 +54,17 @@ void main() {
   print("Savings Account - account no: ${savingsAccount.accountNumber}");
 
   // Deposit operation on savings account instance
-  final double savingAccountDepositAmount = 500;
-  savingsAccount.deposit(savingAccountDepositAmount);
+  final double savingsAccountDepositAmount = 500;
+  savingsAccount.deposit(savingsAccountDepositAmount);
   print(
-    "After deposit (${savingAccountDepositAmount}): current balance: ${savingsAccount.balance}",
+    "After deposit (${savingsAccountDepositAmount}): current balance: ${savingsAccount.balance}",
   );
 
   // Withdraw operation on savings account instance
-  final double savingAccountWithdrawAmount = 200;
-  savingsAccount.withdraw(savingAccountWithdrawAmount);
+  final double savingsAccountWithdrawAmount = 200;
+  savingsAccount.withdraw(savingsAccountWithdrawAmount);
   print(
-    "After withdraw (${savingAccountWithdrawAmount}): current balance: ${savingsAccount.balance}\n",
+    "After withdraw (${savingsAccountWithdrawAmount}): current balance: ${savingsAccount.balance}\n",
   );
 
   // Create a CurrentAccount instance with overdraft limit of 1000
