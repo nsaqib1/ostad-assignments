@@ -38,10 +38,15 @@ class _ProductListState extends State<ProductList> {
     ProductItem(name: "Charger", price: 9.99),
   ];
 
-  int _totalProduct = 0;
+  final Set<ProductItem> _totalUniqueProduct = {};
 
   void _handleCount(int index) {
-    if (_productList[index].quantity == 4) {
+    if (_productList[index].quantity < 5) {
+      _productList[index].quantity++;
+      _totalUniqueProduct.add(_productList[index]);
+      setState(() {});
+    }
+    if (_productList[index].quantity == 5) {
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -59,9 +64,6 @@ class _ProductListState extends State<ProductList> {
         ),
       );
     }
-    _productList[index].quantity++;
-    _totalProduct++;
-    setState(() {});
   }
 
   @override
@@ -107,7 +109,9 @@ class _ProductListState extends State<ProductList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CartPage(totalProduct: _totalProduct),
+              builder: (context) => CartPage(
+                totalProduct: _totalUniqueProduct.length,
+              ),
             ),
           );
         },
