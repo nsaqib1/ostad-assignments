@@ -2,5 +2,5 @@
 
 ## ScreenShots
 
-<img src="screenshots/screen1.jpg" width=320>&nbsp;&nbsp;
-<img src="screenshots/screen2.jpg" height=320>
+<img src="screenshots/screen1.jpg" width=280>&nbsp;&nbsp;
+<img src="screenshots/screen2.jpg" height=280>
