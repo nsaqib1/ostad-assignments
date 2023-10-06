@@ -38,23 +38,30 @@ class _CartScreenState extends State<CartScreen> {
 
   void _increaseByOne(int index) {
     _productList[index].qty++;
-    _totalPrice += _productList[index].price;
+    _calculateTotalPrice();
     setState(() {});
   }
 
   void _decreaseByOne(int index) {
     if (_productList[index].qty > 1) {
       _productList[index].qty--;
-      _totalPrice -= _productList[index].price;
+      _calculateTotalPrice();
       setState(() {});
     }
+  }
+
+  void _calculateTotalPrice() {
+    _totalPrice = _productList.fold(
+      0,
+      (sum, element) => sum + (element.price * element.qty),
+    );
   }
 
   double _totalPrice = 0;
 
   @override
   void initState() {
-    _totalPrice = _productList.fold(0, (sum, element) => sum + element.price);
+    _calculateTotalPrice();
     super.initState();
   }
 
