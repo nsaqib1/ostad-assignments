@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:module11_assignment/models/photo_model.dart';
 
-class PhotoDetailsScreen extends StatefulWidget {
+class PhotoDetailsScreen extends StatelessWidget {
   final PhotoModel photo;
   const PhotoDetailsScreen({super.key, required this.photo});
 
   @override
-  State<PhotoDetailsScreen> createState() => _PhotoDetailsScreenState();
-}
-
-class _PhotoDetailsScreenState extends State<PhotoDetailsScreen> {
-  @override
   Widget build(BuildContext context) {
-    final photo = widget.photo;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Photo Details"),
