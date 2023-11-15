@@ -7,9 +7,9 @@ import 'network_response.dart';
 
 class NetworkCaller {
   Future<NetworkResponse> postRequest(
-    String url,
+    String url, {
     Map<String, dynamic>? body,
-  ) async {
+  }) async {
     try {
       log(url);
       log(body.toString());
