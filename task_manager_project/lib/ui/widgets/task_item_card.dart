@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../data/models/task.dart';
+
 class TaskItemCard extends StatelessWidget {
   const TaskItemCard({
     super.key,
+    required this.task,
   });
+
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
@@ -14,27 +19,27 @@ class TaskItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Task titile will go here",
-              style: TextStyle(
+              task.title ?? '',
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 10),
-            Text("Task description will go here"),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
+            Text(task.description ?? ""),
+            const SizedBox(height: 10),
             Text(
-              "9-11-2023",
-              style: TextStyle(fontWeight: FontWeight.w800),
+              "Date: ${task.createdDate}",
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Chip(
                   label: Text(
-                    "New",
-                    style: TextStyle(color: Colors.white),
+                    task.status ?? "New",
+                    style: const TextStyle(color: Colors.white),
                   ),
                   backgroundColor: Colors.blue,
                 ),
@@ -42,14 +47,14 @@ class TaskItemCard extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.edit_note,
                         color: Colors.green,
                       ),
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.delete_outlined,
                         color: Colors.red,
                       ),

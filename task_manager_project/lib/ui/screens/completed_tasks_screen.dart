@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../data/models/task_list_model.dart';
+import '../../data/network_caller/network_caller.dart';
+import '../../data/network_caller/network_response.dart';
+import '../../data/utils/urls.dart';
 import '../widgets/profile_summery_bar.dart';
 import '../widgets/task_item_card.dart';
 
@@ -11,6 +15,15 @@ class CompletedTasksScreen extends StatefulWidget {
 }
 
 class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
+  bool getCompletedTaskInProgress = false;
+  TaskListModel taskListModel = TaskListModel();
+
+  @override
+  void initState() {
+    getCompletedTaskList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +33,46 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
       ),
       body: Column(
         children: [
-          ProfileSummeryBar(),
+          const ProfileSummeryBar(),
           Expanded(
-            child: ListView.separated(
-              padding: EdgeInsets.all(10),
-              itemBuilder: (context, index) => TaskItemCard(),
-              separatorBuilder: (context, index) => SizedBox(height: 10),
-              itemCount: 5,
+            child: Visibility(
+              visible: getCompletedTaskInProgress == false,
+              replacement: const Center(
+                child: CircularProgressIndicator(),
+              ),
+              child: ListView.separated(
+                padding: const EdgeInsets.all(10),
+                itemBuilder: (context, index) => TaskItemCard(
+                  task: taskListModel.taskList![index],
+                ),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
+                itemCount: taskListModel.taskList?.length ?? 0,
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> getCompletedTaskList() async {
+    getCompletedTaskInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    final NetworkResponse response = await NetworkCaller().getRequest(
+      Urls.getCompletedTasks,
+    );
+
+    if (response.isSuccess) {
+      taskListModel = TaskListModel.fromJson(response.jsonResponse);
+    }
+
+    getCompletedTaskInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
   }
 }

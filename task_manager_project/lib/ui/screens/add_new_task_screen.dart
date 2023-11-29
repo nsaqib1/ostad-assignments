@@ -112,7 +112,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       final NetworkResponse response = await NetworkCaller().postRequest(
         Urls.createTask,
         body: {
-          "subject": _subjectController.text.trim(),
+          "title": _subjectController.text.trim(),
           "description": _descriptionController.text.trim(),
           "status": "New",
         },
