@@ -40,14 +40,26 @@ class _ProgressTasksScreenState extends State<ProgressTasksScreen> {
               replacement: const Center(
                 child: CircularProgressIndicator(),
               ),
-              child: ListView.separated(
-                padding: const EdgeInsets.all(10),
-                itemBuilder: (context, index) => TaskItemCard(
-                  task: taskListModel.taskList![index],
+              child: RefreshIndicator(
+                onRefresh: getInProgressTaskList,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(10),
+                  itemBuilder: (context, index) => TaskItemCard(
+                    task: taskListModel.taskList![index],
+                    onStatusChange: () {
+                      getInProgressTaskList();
+                    },
+                    showProgress: (inProgress) {
+                      getInProgressTaskInProgress = inProgress;
+                      if (mounted) {
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: taskListModel.taskList?.length ?? 0,
                 ),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemCount: taskListModel.taskList?.length ?? 0,
               ),
             ),
           ),

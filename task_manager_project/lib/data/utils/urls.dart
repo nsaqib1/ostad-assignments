@@ -9,7 +9,7 @@ class Urls {
   static const String getCancelledTasks =
       '$_baseUrl/listTaskByStatus/Cancelled';
   static const String getInProgressTasks =
-      '$_baseUrl/listTaskByStatus/inProgress';
+      '$_baseUrl/listTaskByStatus/Progress';
   static const String getTaskStatusCount = '$_baseUrl/taskStatusCount';
 
   static String updateTaskStatus(String taskId, String status) =>

@@ -19,11 +19,11 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     setState(() {});
   }
 
-  List<Widget> _screens = [
-    NewTasksScreen(),
-    ProgressTasksScreen(),
-    CompletedTasksScreen(),
-    CancelledTasksScreen(),
+  final List<Widget> _screens = [
+    const NewTasksScreen(),
+    const ProgressTasksScreen(),
+    const CompletedTasksScreen(),
+    const CancelledTasksScreen(),
   ];
 
   @override
@@ -39,7 +39,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt_rounded),
-            label: "New Task",
+            label: "New",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.change_circle_outlined),

@@ -71,14 +71,27 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
               replacement: const Center(
                 child: CircularProgressIndicator(),
               ),
-              child: ListView.separated(
-                padding: const EdgeInsets.all(10),
-                itemBuilder: (context, index) => TaskItemCard(
-                  task: taskListModel.taskList![index],
+              child: RefreshIndicator(
+                onRefresh: refreshScreen,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(10),
+                  itemBuilder: (context, index) => TaskItemCard(
+                    task: taskListModel.taskList![index],
+                    onStatusChange: () {
+                      getNewTaskList();
+                      getTaskCountSummaryList();
+                    },
+                    showProgress: (inProgress) {
+                      getNewTaskInProgress = inProgress;
+                      if (mounted) {
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: taskListModel.taskList?.length ?? 0,
                 ),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemCount: taskListModel.taskList?.length ?? 0,
               ),
             ),
           ),
@@ -89,13 +102,20 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddNewTaskScreen(),
+              builder: (context) => AddNewTaskScreen(
+                onBack: refreshScreen,
+              ),
             ),
           );
         },
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> refreshScreen() async {
+    getNewTaskList();
+    getTaskCountSummaryList();
   }
 
   Future<void> getTaskCountSummaryList() async {

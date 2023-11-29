@@ -40,14 +40,26 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
               replacement: const Center(
                 child: CircularProgressIndicator(),
               ),
-              child: ListView.separated(
-                padding: const EdgeInsets.all(10),
-                itemBuilder: (context, index) => TaskItemCard(
-                  task: taskListModel.taskList![index],
+              child: RefreshIndicator(
+                onRefresh: getCompletedTaskList,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(10),
+                  itemBuilder: (context, index) => TaskItemCard(
+                    task: taskListModel.taskList![index],
+                    onStatusChange: () {
+                      getCompletedTaskList();
+                    },
+                    showProgress: (inProgress) {
+                      getCompletedTaskInProgress = inProgress;
+                      if (mounted) {
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: taskListModel.taskList?.length ?? 0,
                 ),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemCount: taskListModel.taskList?.length ?? 0,
               ),
             ),
           ),
