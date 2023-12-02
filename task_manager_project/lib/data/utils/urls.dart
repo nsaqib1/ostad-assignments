@@ -18,4 +18,13 @@ class Urls {
   static String deleteTask(String taskId) => '$_baseUrl/deleteTask/$taskId';
 
   static const String updateProfile = '$_baseUrl/profileUpdate';
+
+  static String recoverVerifyEmail(String email) =>
+      "$_baseUrl/RecoverVerifyEmail/$email";
+
+  static String recoverVerifyOTP(String email, String otp) {
+    return "$_baseUrl/RecoverVerifyOTP/$email/$otp";
+  }
+
+  static const String recoverResetPass = "$_baseUrl/RecoverResetPass";
 }

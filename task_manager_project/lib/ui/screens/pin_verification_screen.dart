@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:task_manager_project/data/network_caller/network_caller.dart';
+import 'package:task_manager_project/data/network_caller/network_response.dart';
+import 'package:task_manager_project/data/utils/urls.dart';
 
 import '../widgets/body_background.dart';
 import 'login_screen.dart';
 import 'reset_password_screen.dart';
 
-class PinVerificationScreen extends StatelessWidget {
-  const PinVerificationScreen({super.key});
+class PinVerificationScreen extends StatefulWidget {
+  const PinVerificationScreen({super.key, required this.email});
+
+  final String email;
+
+  @override
+  State<PinVerificationScreen> createState() => _PinVerificationScreenState();
+}
+
+class _PinVerificationScreenState extends State<PinVerificationScreen> {
+  String _otp = "";
+  bool _otpComplete = false;
+  bool _otpVerificationInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +57,7 @@ class PinVerificationScreen extends StatelessWidget {
                     length: 6,
                     obscureText: false,
                     animationType: AnimationType.fade,
+                    keyboardType: TextInputType.number,
                     pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
                       borderRadius: BorderRadius.circular(5),
@@ -56,22 +71,26 @@ class PinVerificationScreen extends StatelessWidget {
                     animationDuration: const Duration(milliseconds: 200),
                     enableActiveFill: true,
                     appContext: context,
+                    onCompleted: (value) {
+                      _otp = value;
+                      _otpComplete = true;
+                      setState(() {});
+                    },
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ResetPasswordScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text("Verify"),
+                    child: Visibility(
+                      visible: _otpVerificationInProgress == false,
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: _otpComplete ? _verifyOTP : null,
+                        child: const Text("Verify"),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -114,5 +133,38 @@ class PinVerificationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _verifyOTP() async {
+    _otpVerificationInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    final NetworkResponse response = await NetworkCaller().getRequest(
+      Urls.recoverVerifyOTP(
+        widget.email,
+        _otp,
+      ),
+    );
+
+    _otpVerificationInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
+
+    if (response.isSuccess) {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResetPasswordScreen(
+              email: widget.email,
+              otp: _otp,
+            ),
+          ),
+        );
+      }
+    }
   }
 }

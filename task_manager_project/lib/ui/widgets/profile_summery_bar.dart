@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager_project/ui/controllers/auth_controller.dart';
 import 'package:task_manager_project/ui/screens/login_screen.dart';
@@ -87,8 +89,13 @@ class _ProfileSummeryBarState extends State<ProfileSummeryBar> {
   Uint8List? get photo {
     final String? userPhoto = AuthController.user?.photo;
     if (userPhoto == null) return null;
-
-    Uint8List imageBytes = const Base64Decoder().convert(userPhoto);
-    return imageBytes;
+    try {
+      Uint8List imageBytes = const Base64Decoder().convert(userPhoto);
+      return imageBytes;
+    } catch (e) {
+      log(e.toString());
+      print(e);
+      return null;
+    }
   }
 }
