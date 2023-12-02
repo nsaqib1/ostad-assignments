@@ -49,6 +49,9 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
                     onStatusChange: () {
                       getCompletedTaskList();
                     },
+                    onDeleteTask: () {
+                      getCompletedTaskList();
+                    },
                     showProgress: (inProgress) {
                       getCompletedTaskInProgress = inProgress;
                       if (mounted) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_project/ui/widgets/snackbar_builder.dart';
 
 import '../../data/models/task.dart';
 import '../../data/network_caller/network_caller.dart';
@@ -17,10 +18,12 @@ class TaskItemCard extends StatefulWidget {
     required this.task,
     required this.onStatusChange,
     required this.showProgress,
+    required this.onDeleteTask,
   });
 
   final Task task;
   final VoidCallback onStatusChange;
+  final VoidCallback onDeleteTask;
   final Function(bool) showProgress;
 
   @override
@@ -64,6 +67,13 @@ class _TaskItemCardState extends State<TaskItemCard> {
                 Row(
                   children: [
                     IconButton(
+                      onPressed: showDeleteTaskModal,
+                      icon: const Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.red,
+                      ),
+                    ),
+                    IconButton(
                       onPressed: showUpdateStatusModal,
                       icon: const Icon(
                         Icons.edit_note,
@@ -76,6 +86,54 @@ class _TaskItemCardState extends State<TaskItemCard> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> deleteTask() async {
+    widget.showProgress(true);
+    final response = await NetworkCaller()
+        .getRequest(Urls.deleteTask(widget.task.sId ?? ""));
+    if (response.isSuccess) {
+      widget.onDeleteTask();
+    } else {
+      if (mounted) {
+        showSnackMessage(context, "Error! could not delete!");
+      }
+    }
+    widget.showProgress(false);
+  }
+
+  void showDeleteTaskModal() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Are you sure?"),
+        actions: [
+          ButtonBar(
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  deleteTask();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -103,7 +161,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Update Status"),
+        title: const Text("Update Status"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: items,
@@ -115,7 +173,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text(
+                child: const Text(
                   "Cancel",
                   style: TextStyle(color: Colors.grey),
                 ),

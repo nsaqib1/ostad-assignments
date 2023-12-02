@@ -81,6 +81,10 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
                       getNewTaskList();
                       getTaskCountSummaryList();
                     },
+                    onDeleteTask: () {
+                      getNewTaskList();
+                      getTaskCountSummaryList();
+                    },
                     showProgress: (inProgress) {
                       getNewTaskInProgress = inProgress;
                       if (mounted) {

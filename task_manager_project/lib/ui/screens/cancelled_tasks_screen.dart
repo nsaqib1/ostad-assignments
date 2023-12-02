@@ -49,6 +49,9 @@ class _CancelledTasksScreenState extends State<CancelledTasksScreen> {
                     onStatusChange: () {
                       getCancelledTaskList();
                     },
+                    onDeleteTask: () {
+                      getCancelledTaskList();
+                    },
                     showProgress: (inProgress) {
                       getCancelledTaskInProgress = inProgress;
                       if (mounted) {

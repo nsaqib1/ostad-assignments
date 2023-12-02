@@ -49,6 +49,9 @@ class _ProgressTasksScreenState extends State<ProgressTasksScreen> {
                     onStatusChange: () {
                       getInProgressTaskList();
                     },
+                    onDeleteTask: () {
+                      getInProgressTaskList();
+                    },
                     showProgress: (inProgress) {
                       getInProgressTaskInProgress = inProgress;
                       if (mounted) {
