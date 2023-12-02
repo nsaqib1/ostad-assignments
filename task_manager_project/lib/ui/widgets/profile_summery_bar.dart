@@ -4,6 +4,9 @@ import 'package:task_manager_project/ui/screens/login_screen.dart';
 
 import '../screens/edit_profile_screen.dart';
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 class ProfileSummeryBar extends StatefulWidget {
   const ProfileSummeryBar({
     super.key,
@@ -30,8 +33,17 @@ class _ProfileSummeryBarState extends State<ProfileSummeryBar> {
               );
             }
           : null,
-      leading: const CircleAvatar(
-        child: Icon(Icons.person),
+      leading: CircleAvatar(
+        child: photo == null
+            ? const Icon(Icons.person)
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.memory(
+                  photo!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
       ),
       title: Text(
         fullname,
@@ -70,5 +82,13 @@ class _ProfileSummeryBarState extends State<ProfileSummeryBar> {
 
   String get email {
     return AuthController.user?.email ?? "";
+  }
+
+  Uint8List? get photo {
+    final String? userPhoto = AuthController.user?.photo;
+    if (userPhoto == null) return null;
+
+    Uint8List imageBytes = const Base64Decoder().convert(userPhoto);
+    return imageBytes;
   }
 }
