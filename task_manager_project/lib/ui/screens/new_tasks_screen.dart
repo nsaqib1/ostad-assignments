@@ -44,27 +44,25 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
         children: [
           const ProfileSummeryBar(),
           Visibility(
-            visible: getTaskCountSummaryInProgress == false,
+            visible: getTaskCountSummaryInProgress == false &&
+                taskCountSummaryListModel.taskCountList != null,
             replacement: const LinearProgressIndicator(),
-            child: Visibility(
-              visible: taskCountSummaryListModel.taskCountList != null,
-              child: SizedBox(
-                height: 120,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount:
-                        taskCountSummaryListModel.taskCountList?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      TaskCount taskCount =
-                          taskCountSummaryListModel.taskCountList![index];
-                      return FittedBox(
-                        child: SummeryCard(
-                          count: taskCount.sum.toString(),
-                          title: taskCount.sId ?? '',
-                        ),
-                      );
-                    }),
-              ),
+            child: SizedBox(
+              height: 120,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount:
+                      taskCountSummaryListModel.taskCountList?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    TaskCount taskCount =
+                        taskCountSummaryListModel.taskCountList![index];
+                    return FittedBox(
+                      child: SummeryCard(
+                        count: taskCount.sum.toString(),
+                        title: taskCount.sId ?? '',
+                      ),
+                    );
+                  }),
             ),
           ),
           Expanded(
