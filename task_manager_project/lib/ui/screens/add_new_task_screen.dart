@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager_project/data/network_caller/network_caller.dart';
 import 'package:task_manager_project/data/network_caller/network_response.dart';
 import 'package:task_manager_project/data/utils/urls.dart';
+import 'package:task_manager_project/ui/utils/form_validators.dart';
 import 'package:task_manager_project/ui/widgets/snackbar_builder.dart';
 
 import '../widgets/body_background.dart';
@@ -64,7 +65,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                               hintText: "Subject",
                             ),
                             validator: (value) {
-                              return _commonValidator(
+                              return FormValidators.validateEmptyField(
                                 value,
                                 "Enter Your Subject",
                               );
@@ -78,7 +79,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                             ),
                             maxLines: 8,
                             validator: (value) {
-                              return _commonValidator(
+                              return FormValidators.validateEmptyField(
                                 value,
                                 "Enter Your Description",
                               );
@@ -145,13 +146,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
         }
       }
     }
-  }
-
-  String? _commonValidator(String? value, String errorMsg) {
-    if (value?.trim().isEmpty ?? true) {
-      return errorMsg;
-    }
-    return null;
   }
 
   @override

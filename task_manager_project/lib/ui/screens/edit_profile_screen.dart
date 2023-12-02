@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager_project/ui/controllers/auth_controller.dart';
+import 'package:task_manager_project/ui/utils/form_validators.dart';
 
 import '../../data/models/user_model.dart';
 import '../../data/network_caller/network_caller.dart';
@@ -75,7 +76,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: const InputDecoration(
                             hintText: "Email",
                           ),
-                          validator: _emailValidator,
+                          validator: FormValidators.validateEmail,
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
@@ -84,7 +85,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             hintText: "First Name",
                           ),
                           validator: (String? value) {
-                            return _commonValidator(
+                            return FormValidators.validateEmptyField(
                               value,
                               "First Name is Required!",
                             );
@@ -97,7 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             hintText: "Last Name",
                           ),
                           validator: (String? value) {
-                            return _commonValidator(
+                            return FormValidators.validateEmptyField(
                               value,
                               "Last Name is Required!",
                             );
@@ -110,7 +111,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             hintText: "Mobile",
                           ),
                           validator: (String? value) {
-                            return _commonValidator(
+                            return FormValidators.validateEmptyField(
                               value,
                               "Mobile is Required!",
                             );
@@ -198,35 +199,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         showSnackMessage(context, 'Update profile failed. Try again.');
       }
     }
-  }
-
-  String? _emailValidator(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return "Enter Your Email";
-    }
-    const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
-        r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-        r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
-        r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-        r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-        r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-        r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-    final isValid = RegExp(
-      pattern,
-    ).hasMatch(value!);
-
-    if (isValid == false) {
-      return "Enter Your Valid Email";
-    }
-
-    return null;
-  }
-
-  String? _commonValidator(String? value, String errorMsg) {
-    if (value?.trim().isEmpty ?? true) {
-      return errorMsg;
-    }
-    return null;
   }
 
   Container photoPickerField() {

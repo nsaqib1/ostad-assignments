@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/network_caller/network_caller.dart';
 import '../../data/network_caller/network_response.dart';
 import '../../data/utils/urls.dart';
+import '../utils/form_validators.dart';
 import '../widgets/body_background.dart';
 import '../widgets/snackbar_builder.dart';
 
@@ -52,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       decoration: const InputDecoration(
                         hintText: 'Email',
                       ),
-                      validator: _emailValidator,
+                      validator: FormValidators.validateEmail,
                     ),
                     const SizedBox(
                       height: 16,
@@ -63,7 +64,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: 'First Name',
                       ),
                       validator: (value) {
-                        return _commonValidator(value, "Enter First Name");
+                        return FormValidators.validateEmptyField(
+                          value,
+                          "Enter First Name",
+                        );
                       },
                     ),
                     const SizedBox(
@@ -75,7 +79,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: 'Last Name',
                       ),
                       validator: (value) {
-                        return _commonValidator(value, "Enter Last Name");
+                        return FormValidators.validateEmptyField(
+                          value,
+                          "Enter Last Name",
+                        );
                       },
                     ),
                     const SizedBox(
@@ -88,7 +95,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: 'Mobile',
                       ),
                       validator: (value) {
-                        return _commonValidator(value, "Enter Mobile Number");
+                        return FormValidators.validateEmptyField(
+                          value,
+                          "Enter Mobile Number",
+                        );
                       },
                     ),
                     const SizedBox(
@@ -101,7 +111,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: 'Password',
                       ),
                       validator: (value) {
-                        return _commonValidator(value, "Enter Password");
+                        return FormValidators.validateEmptyField(
+                          value,
+                          "Enter Password",
+                        );
                       },
                     ),
                     const SizedBox(
@@ -185,35 +198,6 @@ class _SignupScreenState extends State<SignupScreen> {
         }
       }
     }
-  }
-
-  String? _emailValidator(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return "Enter Your Email";
-    }
-    const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
-        r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-        r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
-        r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-        r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-        r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-        r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-    final isValid = RegExp(
-      pattern,
-    ).hasMatch(value!);
-
-    if (isValid == false) {
-      return "Enter Your Valid Email";
-    }
-
-    return null;
-  }
-
-  String? _commonValidator(String? value, String errorMsg) {
-    if (value?.trim().isEmpty ?? true) {
-      return errorMsg;
-    }
-    return null;
   }
 
   void _clearTextFields() {
