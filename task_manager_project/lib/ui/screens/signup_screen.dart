@@ -107,6 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
+                      keyboardType: TextInputType.visiblePassword,
                       decoration: const InputDecoration(
                         hintText: 'Password',
                       ),
