@@ -20,8 +20,8 @@ class _CancelledTasksScreenState extends State<CancelledTasksScreen> {
 
   @override
   void initState() {
-    getCancelledTaskList();
     super.initState();
+    getCancelledTaskList();
   }
 
   @override
@@ -59,8 +59,7 @@ class _CancelledTasksScreenState extends State<CancelledTasksScreen> {
                       }
                     },
                   ),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
                   itemCount: taskListModel.taskList?.length ?? 0,
                 ),
               ),

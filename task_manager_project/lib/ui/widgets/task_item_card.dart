@@ -31,6 +31,14 @@ class TaskItemCard extends StatefulWidget {
 }
 
 class _TaskItemCardState extends State<TaskItemCard> {
+  late final Task task;
+
+  @override
+  void initState() {
+    super.initState();
+    task = widget.task;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -40,7 +48,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.task.title ?? '',
+              task.title ?? '',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -50,7 +58,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
             Text(widget.task.description ?? ""),
             const SizedBox(height: 10),
             Text(
-              "Date: ${widget.task.createdDate}",
+              "Date: ${task.createdDate}",
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),
@@ -59,7 +67,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
               children: [
                 Chip(
                   label: Text(
-                    widget.task.status ?? "New",
+                    task.status ?? "New",
                     style: const TextStyle(color: Colors.white),
                   ),
                   backgroundColor: Colors.blue,
@@ -92,8 +100,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
 
   Future<void> deleteTask() async {
     widget.showProgress(true);
-    final response = await NetworkCaller()
-        .getRequest(Urls.deleteTask(widget.task.sId ?? ""));
+    final response = await NetworkCaller().getRequest(Urls.deleteTask(task.sId ?? ""));
     if (response.isSuccess) {
       widget.onDeleteTask();
     } else {
@@ -140,8 +147,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
 
   Future<void> updateTaskStatus(String status) async {
     widget.showProgress(true);
-    final response = await NetworkCaller()
-        .getRequest(Urls.updateTaskStatus(widget.task.sId ?? '', status));
+    final response = await NetworkCaller().getRequest(Urls.updateTaskStatus(task.sId ?? '', status));
     if (response.isSuccess) {
       widget.onStatusChange();
     }

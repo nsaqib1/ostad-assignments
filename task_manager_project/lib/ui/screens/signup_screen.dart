@@ -174,8 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (mounted) {
         setState(() {});
       }
-      final NetworkResponse response =
-          await NetworkCaller().postRequest(Urls.registration, body: {
+      final NetworkResponse response = await NetworkCaller().postRequest(Urls.registration, body: {
         "firstName": _firstNameController.text.trim(),
         "lastName": _lastNameController.text.trim(),
         "email": _emailController.text.trim(),
@@ -193,8 +192,7 @@ class _SignupScreenState extends State<SignupScreen> {
         }
       } else {
         if (mounted) {
-          showSnackMessage(
-              context, 'Account creation failed! Please try again.', true);
+          showSnackMessage(context, 'Account creation failed! Please try again.', true);
         }
       }
     }
@@ -210,11 +208,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     _emailController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _mobileController.dispose();
     _passwordController.dispose();
-    super.dispose();
   }
 }

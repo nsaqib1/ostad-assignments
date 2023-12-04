@@ -20,8 +20,8 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
 
   @override
   void initState() {
-    getCompletedTaskList();
     super.initState();
+    getCompletedTaskList();
   }
 
   @override
@@ -59,8 +59,7 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
                       }
                     },
                   ),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
                   itemCount: taskListModel.taskList?.length ?? 0,
                 ),
               ),

@@ -21,12 +21,12 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final _emailController = TextEditingController();
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _mobileController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _updateProfileInProgress = false;
 
@@ -134,8 +134,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             child: ElevatedButton(
                               onPressed: updateProfile,
-                              child:
-                                  const Icon(Icons.arrow_circle_right_outlined),
+                              child: const Icon(Icons.arrow_circle_right_outlined),
                             ),
                           ),
                         ),
@@ -204,8 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Container photoPickerField() {
     return Container(
       height: 50,
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
           Expanded(
@@ -229,8 +227,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             flex: 3,
             child: InkWell(
               onTap: () async {
-                final XFile? image = await ImagePicker()
-                    .pickImage(source: ImageSource.camera, imageQuality: 50);
+                final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 50);
                 if (image != null) {
                   photo = image;
                   if (mounted) {

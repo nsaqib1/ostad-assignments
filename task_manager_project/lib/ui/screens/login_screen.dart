@@ -97,8 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgotPasswordScreen(),
+                              builder: (context) => const ForgotPasswordScreen(),
                             ),
                           );
                         },
@@ -113,10 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         const Text(
                           "Don't have an account?",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black54),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54),
                         ),
                         TextButton(
                           onPressed: () {
@@ -199,8 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    super.dispose();
   }
 }

@@ -23,14 +23,13 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   TaskListModel taskListModel = TaskListModel();
 
   bool getTaskCountSummaryInProgress = false;
-  TaskCountSummaryListModel taskCountSummaryListModel =
-      TaskCountSummaryListModel();
+  TaskCountSummaryListModel taskCountSummaryListModel = TaskCountSummaryListModel();
 
   @override
   void initState() {
+    super.initState();
     getTaskCountSummaryList();
     getNewTaskList();
-    super.initState();
   }
 
   @override
@@ -44,18 +43,15 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
         children: [
           const ProfileSummeryBar(),
           Visibility(
-            visible: getTaskCountSummaryInProgress == false &&
-                taskCountSummaryListModel.taskCountList != null,
+            visible: getTaskCountSummaryInProgress == false && taskCountSummaryListModel.taskCountList != null,
             replacement: const LinearProgressIndicator(),
             child: SizedBox(
               height: 120,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount:
-                      taskCountSummaryListModel.taskCountList?.length ?? 0,
+                  itemCount: taskCountSummaryListModel.taskCountList?.length ?? 0,
                   itemBuilder: (context, index) {
-                    TaskCount taskCount =
-                        taskCountSummaryListModel.taskCountList![index];
+                    TaskCount taskCount = taskCountSummaryListModel.taskCountList![index];
                     return FittedBox(
                       child: SummeryCard(
                         count: taskCount.sum.toString(),
@@ -92,8 +88,7 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
                       }
                     },
                   ),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
                   itemCount: taskListModel.taskList?.length ?? 0,
                 ),
               ),
@@ -127,11 +122,9 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
     if (mounted) {
       setState(() {});
     }
-    final NetworkResponse response =
-        await NetworkCaller().getRequest(Urls.getTaskStatusCount);
+    final NetworkResponse response = await NetworkCaller().getRequest(Urls.getTaskStatusCount);
     if (response.isSuccess) {
-      taskCountSummaryListModel =
-          TaskCountSummaryListModel.fromJson(response.jsonResponse);
+      taskCountSummaryListModel = TaskCountSummaryListModel.fromJson(response.jsonResponse);
     }
     getTaskCountSummaryInProgress = false;
     if (mounted) {

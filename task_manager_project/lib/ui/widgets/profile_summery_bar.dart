@@ -94,7 +94,6 @@ class _ProfileSummeryBarState extends State<ProfileSummeryBar> {
       return imageBytes;
     } catch (e) {
       log(e.toString());
-      print(e);
       return null;
     }
   }
