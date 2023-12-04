@@ -18,7 +18,6 @@
 <img src="screenshots/13 (2).jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/14.jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/15.jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="screenshots/16.jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/17.jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/18.jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/19.jpg" width="180">&nbsp;&nbsp;&nbsp;&nbsp;
