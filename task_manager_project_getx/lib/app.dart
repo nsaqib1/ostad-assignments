@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_project_getx/ui/controllers/add_new_task_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/login_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/task_item_controller.dart';
@@ -53,5 +54,6 @@ class ControllerBinder extends Bindings {
     Get.put(LoginController());
     Get.put(NewTaskController());
     Get.put(TaskItemController());
+    Get.put(AddNewTaskController());
   }
 }
