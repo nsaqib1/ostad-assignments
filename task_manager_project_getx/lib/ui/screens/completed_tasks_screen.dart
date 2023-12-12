@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../data/models/task_list_model.dart';
-import '../../data/network_caller/network_caller.dart';
-import '../../data/network_caller/network_response.dart';
-import '../../data/utils/urls.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project_getx/ui/controllers/completed_tasks_controller.dart';
+import 'package:task_manager_project_getx/ui/widgets/snackbar_builder.dart';
 import '../widgets/profile_summery_bar.dart';
 import '../widgets/task_item_card.dart';
 
@@ -15,13 +13,12 @@ class CompletedTasksScreen extends StatefulWidget {
 }
 
 class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
-  bool getCompletedTaskInProgress = false;
-  TaskListModel taskListModel = TaskListModel();
+  final CompletedTasksController _completedTasksController = Get.find<CompletedTasksController>();
 
   @override
   void initState() {
-    super.initState();
     getCompletedTaskList();
+    super.initState();
   }
 
   @override
@@ -35,32 +32,31 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
         children: [
           const ProfileSummeryBar(),
           Expanded(
-            child: Visibility(
-              visible: getCompletedTaskInProgress == false,
-              replacement: const Center(
-                child: CircularProgressIndicator(),
-              ),
-              child: RefreshIndicator(
-                onRefresh: getCompletedTaskList,
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(10),
-                  itemBuilder: (context, index) => TaskItemCard(
-                    task: taskListModel.taskList![index],
-                    onStatusChange: () {
-                      getCompletedTaskList();
-                    },
-                    onDeleteTask: () {
-                      getCompletedTaskList();
-                    },
-                    showProgress: (inProgress) {
-                      getCompletedTaskInProgress = inProgress;
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    },
+            child: GetBuilder<CompletedTasksController>(
+              builder: (controller) => Visibility(
+                visible: controller.getCompletedTaskInProgress == false,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: RefreshIndicator(
+                  onRefresh: getCompletedTaskList,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(10),
+                    itemBuilder: (context, index) => TaskItemCard(
+                      task: controller.taskListModel.taskList![index],
+                      onStatusChange: () {
+                        getCompletedTaskList();
+                      },
+                      onDeleteTask: () {
+                        getCompletedTaskList();
+                      },
+                      showProgress: (inProgress) {
+                        controller.getCompletedTaskInProgress = inProgress;
+                      },
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
+                    itemCount: controller.taskListModel.taskList?.length ?? 0,
                   ),
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
-                  itemCount: taskListModel.taskList?.length ?? 0,
                 ),
               ),
             ),
@@ -71,22 +67,11 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
   }
 
   Future<void> getCompletedTaskList() async {
-    getCompletedTaskInProgress = true;
-    if (mounted) {
-      setState(() {});
-    }
-
-    final NetworkResponse response = await NetworkCaller().getRequest(
-      Urls.getCompletedTasks,
-    );
-
-    if (response.isSuccess) {
-      taskListModel = TaskListModel.fromJson(response.jsonResponse);
-    }
-
-    getCompletedTaskInProgress = false;
-    if (mounted) {
-      setState(() {});
+    final bool response = await _completedTasksController.getCompletedTaskList();
+    if (response == false) {
+      if (mounted) {
+        showSnackMessage(context, "Error! Could Not Get Data");
+      }
     }
   }
 }
