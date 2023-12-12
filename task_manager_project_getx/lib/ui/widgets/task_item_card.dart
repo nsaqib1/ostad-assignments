@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project_getx/ui/controllers/task_item_controller.dart';
 import 'package:task_manager_project_getx/ui/widgets/snackbar_builder.dart';
 
 import '../../data/models/task.dart';
-import '../../data/network_caller/network_caller.dart';
-import '../../data/utils/urls.dart';
 
 enum TaskStatus {
   New,
@@ -32,6 +32,7 @@ class TaskItemCard extends StatefulWidget {
 
 class _TaskItemCardState extends State<TaskItemCard> {
   late final Task task;
+  final _taskItemController = Get.find<TaskItemController>();
 
   @override
   void initState() {
@@ -100,8 +101,8 @@ class _TaskItemCardState extends State<TaskItemCard> {
 
   Future<void> deleteTask() async {
     widget.showProgress(true);
-    final response = await NetworkCaller().getRequest(Urls.deleteTask(task.sId ?? ""));
-    if (response.isSuccess) {
+    final bool response = await _taskItemController.deleteTask(task.sId ?? "");
+    if (response) {
       widget.onDeleteTask();
     } else {
       if (mounted) {
@@ -121,7 +122,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 child: const Text(
                   "Cancel",
@@ -131,7 +132,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
               TextButton(
                 onPressed: () {
                   deleteTask();
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 child: const Text(
                   "Delete",
@@ -147,8 +148,8 @@ class _TaskItemCardState extends State<TaskItemCard> {
 
   Future<void> updateTaskStatus(String status) async {
     widget.showProgress(true);
-    final response = await NetworkCaller().getRequest(Urls.updateTaskStatus(task.sId ?? '', status));
-    if (response.isSuccess) {
+    final response = await _taskItemController.updateTaskStatus(task.sId ?? '', status);
+    if (response) {
       widget.onStatusChange();
     }
     widget.showProgress(false);
@@ -160,7 +161,7 @@ class _TaskItemCardState extends State<TaskItemCard> {
               title: Text(e.name),
               onTap: () {
                 updateTaskStatus(e.name);
-                Navigator.pop(context);
+                Get.back();
               },
             ))
         .toList();

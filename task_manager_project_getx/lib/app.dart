@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager_project_getx/ui/controllers/login_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/task_item_controller.dart';
 import 'ui/screens/splash_screen.dart';
 
 class TaskManagerApp extends StatelessWidget {
@@ -49,5 +51,7 @@ class ControllerBinder extends Bindings {
   @override
   void dependencies() {
     Get.put(LoginController());
+    Get.put(NewTaskController());
+    Get.put(TaskItemController());
   }
 }

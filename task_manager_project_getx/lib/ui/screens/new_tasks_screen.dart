@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_project_getx/data/models/task_list_model.dart';
-import 'package:task_manager_project_getx/data/network_caller/network_caller.dart';
-import 'package:task_manager_project_getx/data/network_caller/network_response.dart';
-import 'package:task_manager_project_getx/data/utils/urls.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dart';
 
 import '../../data/models/task_count.dart';
-import '../../data/models/task_count_summery_list_model.dart';
 import '../widgets/profile_summery_bar.dart';
 import '../widgets/summery_card.dart';
 import '../widgets/task_item_card.dart';
@@ -19,17 +16,13 @@ class NewTasksScreen extends StatefulWidget {
 }
 
 class _NewTasksScreenState extends State<NewTasksScreen> {
-  bool getNewTaskInProgress = false;
-  TaskListModel taskListModel = TaskListModel();
-
-  bool getTaskCountSummaryInProgress = false;
-  TaskCountSummaryListModel taskCountSummaryListModel = TaskCountSummaryListModel();
+  final NewTaskController _newTaskController = Get.find<NewTaskController>();
 
   @override
   void initState() {
     super.initState();
-    getTaskCountSummaryList();
-    getNewTaskList();
+    _newTaskController.getTaskCountSummaryList();
+    _newTaskController.getNewTaskList();
   }
 
   @override
@@ -39,71 +32,66 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
         toolbarHeight: 0,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          const ProfileSummeryBar(),
-          Visibility(
-            visible: getTaskCountSummaryInProgress == false && taskCountSummaryListModel.taskCountList != null,
-            replacement: const LinearProgressIndicator(),
-            child: SizedBox(
-              height: 120,
-              child: ListView.builder(
+      body: GetBuilder<NewTaskController>(
+        builder: (controller) => Column(
+          children: [
+            const ProfileSummeryBar(),
+            Visibility(
+              visible: controller.getTaskCountSummaryInProgress == false && controller.taskCountSummaryListModel.taskCountList != null,
+              replacement: const LinearProgressIndicator(),
+              child: SizedBox(
+                height: 120,
+                child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: taskCountSummaryListModel.taskCountList?.length ?? 0,
+                  itemCount: controller.taskCountSummaryListModel.taskCountList?.length ?? 0,
                   itemBuilder: (context, index) {
-                    TaskCount taskCount = taskCountSummaryListModel.taskCountList![index];
+                    TaskCount taskCount = controller.taskCountSummaryListModel.taskCountList![index];
                     return FittedBox(
                       child: SummeryCard(
                         count: taskCount.sum.toString(),
                         title: taskCount.sId ?? '',
                       ),
                     );
-                  }),
-            ),
-          ),
-          Expanded(
-            child: Visibility(
-              visible: getNewTaskInProgress == false,
-              replacement: const Center(
-                child: CircularProgressIndicator(),
-              ),
-              child: RefreshIndicator(
-                onRefresh: refreshScreen,
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(10),
-                  itemBuilder: (context, index) => TaskItemCard(
-                    task: taskListModel.taskList![index],
-                    onStatusChange: () {
-                      getNewTaskList();
-                      getTaskCountSummaryList();
-                    },
-                    onDeleteTask: () {
-                      getNewTaskList();
-                      getTaskCountSummaryList();
-                    },
-                    showProgress: (inProgress) {
-                      getNewTaskInProgress = inProgress;
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    },
-                  ),
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
-                  itemCount: taskListModel.taskList?.length ?? 0,
+                  },
                 ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Visibility(
+                visible: controller.getNewTaskInProgress == false,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: RefreshIndicator(
+                  onRefresh: refreshScreen,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(10),
+                    itemBuilder: (context, index) => TaskItemCard(
+                      task: controller.taskListModel.taskList![index],
+                      onStatusChange: () {
+                        refreshScreen();
+                      },
+                      onDeleteTask: () {
+                        refreshScreen();
+                      },
+                      showProgress: (inProgress) {
+                        controller.getNewTaskInProgress = inProgress;
+                      },
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
+                    itemCount: controller.taskListModel.taskList?.length ?? 0,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddNewTaskScreen(
-                onBack: refreshScreen,
-              ),
+          Get.to(
+            AddNewTaskScreen(
+              onBack: refreshScreen,
             ),
           );
         },
@@ -113,42 +101,42 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   }
 
   Future<void> refreshScreen() async {
-    getNewTaskList();
-    getTaskCountSummaryList();
+    _newTaskController.getNewTaskList();
+    _newTaskController.getTaskCountSummaryList();
   }
 
-  Future<void> getTaskCountSummaryList() async {
-    getTaskCountSummaryInProgress = true;
-    if (mounted) {
-      setState(() {});
-    }
-    final NetworkResponse response = await NetworkCaller().getRequest(Urls.getTaskStatusCount);
-    if (response.isSuccess) {
-      taskCountSummaryListModel = TaskCountSummaryListModel.fromJson(response.jsonResponse);
-    }
-    getTaskCountSummaryInProgress = false;
-    if (mounted) {
-      setState(() {});
-    }
-  }
+  // Future<void> getTaskCountSummaryList() async {
+  //   getTaskCountSummaryInProgress = true;
+  //   if (mounted) {
+  //     setState(() {});
+  //   }
+  //   final NetworkResponse response = await NetworkCaller().getRequest(Urls.getTaskStatusCount);
+  //   if (response.isSuccess) {
+  //     taskCountSummaryListModel = TaskCountSummaryListModel.fromJson(response.jsonResponse);
+  //   }
+  //   getTaskCountSummaryInProgress = false;
+  //   if (mounted) {
+  //     setState(() {});
+  //   }
+  // }
 
-  Future<void> getNewTaskList() async {
-    getNewTaskInProgress = true;
-    if (mounted) {
-      setState(() {});
-    }
+  // Future<void> getNewTaskList() async {
+  //   getNewTaskInProgress = true;
+  //   if (mounted) {
+  //     setState(() {});
+  //   }
 
-    final NetworkResponse response = await NetworkCaller().getRequest(
-      Urls.getNewTasks,
-    );
+  //   final NetworkResponse response = await NetworkCaller().getRequest(
+  //     Urls.getNewTasks,
+  //   );
 
-    if (response.isSuccess) {
-      taskListModel = TaskListModel.fromJson(response.jsonResponse);
-    }
+  //   if (response.isSuccess) {
+  //     taskListModel = TaskListModel.fromJson(response.jsonResponse);
+  //   }
 
-    getNewTaskInProgress = false;
-    if (mounted) {
-      setState(() {});
-    }
-  }
+  //   getNewTaskInProgress = false;
+  //   if (mounted) {
+  //     setState(() {});
+  //   }
+  // }
 }
