@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager_project_getx/ui/controllers/auth_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/edit_profile_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/photo_picker_controller.dart';
 import 'package:task_manager_project_getx/ui/utils/form_validators.dart';
-
-import '../../data/models/user_model.dart';
-import '../../data/network_caller/network_caller.dart';
-import '../../data/network_caller/network_response.dart';
-import '../../data/utils/urls.dart';
 import '../widgets/body_background.dart';
 import '../widgets/profile_summery_bar.dart';
 import '../widgets/snackbar_builder.dart';
@@ -28,9 +24,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _updateProfileInProgress = false;
-
-  XFile? photo;
+  final EditProfileController _editProfileController = Get.find<EditProfileController>();
+  final PhotoPickerController _photoPickerController = Get.find<PhotoPickerController>();
 
   @override
   void initState() {
@@ -127,14 +122,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
-                          child: Visibility(
-                            visible: _updateProfileInProgress == false,
-                            replacement: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: updateProfile,
-                              child: const Icon(Icons.arrow_circle_right_outlined),
+                          child: GetBuilder<EditProfileController>(
+                            builder: (controller) => Visibility(
+                              visible: controller.updateProfileInProgress == false,
+                              replacement: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              child: ElevatedButton(
+                                onPressed: updateProfile,
+                                child: const Icon(Icons.arrow_circle_right_outlined),
+                              ),
                             ),
                           ),
                         ),
@@ -153,43 +150,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> updateProfile() async {
     if (_formKey.currentState!.validate() == false) return;
 
-    _updateProfileInProgress = true;
-    if (mounted) {
-      setState(() {});
-    }
-    String? photoInBase64;
-    Map<String, dynamic> inputData = {
-      "firstName": _firstNameController.text.trim(),
-      "lastName": _lastNameController.text.trim(),
-      "email": _emailController.text.trim(),
-      "mobile": _mobileController.text.trim(),
-    };
-
-    if (_passwordController.text.isNotEmpty) {
-      inputData['password'] = _passwordController.text;
-    }
-
-    if (photo != null) {
-      List<int> imageBytes = await photo!.readAsBytes();
-      photoInBase64 = base64Encode(imageBytes);
-      inputData['photo'] = photoInBase64;
-    }
-
-    final NetworkResponse response = await NetworkCaller().postRequest(
-      Urls.updateProfile,
-      body: inputData,
+    final bool response = await _editProfileController.updateProfile(
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      email: _emailController.text.trim(),
+      mobile: _mobileController.text.trim(),
+      password: _passwordController.text,
+      photo: _photoPickerController.photo,
     );
-    _updateProfileInProgress = false;
-    if (mounted) {
-      setState(() {});
-    }
-    if (response.isSuccess) {
-      AuthController.updateUserInformation(UserModel(
-          email: _emailController.text.trim(),
-          firstName: _firstNameController.text.trim(),
-          lastName: _lastNameController.text.trim(),
-          mobile: _mobileController.text.trim(),
-          photo: photoInBase64 ?? AuthController.user?.photo));
+
+    if (response) {
       if (mounted) {
         showSnackMessage(context, 'Update profile success!');
       }
@@ -197,6 +167,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (mounted) {
         showSnackMessage(context, 'Update profile failed. Try again.');
       }
+    }
+  }
+
+  Future<void> _pickPhoto() async {
+    final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (image != null) {
+      _photoPickerController.photo = image;
     }
   }
 
@@ -211,11 +188,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Container(
               height: 50,
               decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                  )),
+                color: Colors.grey,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  bottomLeft: Radius.circular(8),
+                ),
+              ),
               alignment: Alignment.center,
               child: const Text(
                 'Photo',
@@ -226,21 +204,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Expanded(
             flex: 3,
             child: InkWell(
-              onTap: () async {
-                final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 50);
-                if (image != null) {
-                  photo = image;
-                  if (mounted) {
-                    setState(() {});
-                  }
-                }
-              },
+              onTap: _pickPhoto,
               child: Container(
                 padding: const EdgeInsets.only(left: 16),
-                child: Visibility(
-                  visible: photo == null,
-                  replacement: Text(photo?.name ?? ''),
-                  child: const Text('Select a photo'),
+                child: GetBuilder<PhotoPickerController>(
+                  builder: (controller) => Visibility(
+                    visible: controller.photo == null,
+                    replacement: Text(controller.photo?.name ?? ''),
+                    child: const Text('Select a photo'),
+                  ),
                 ),
               ),
             ),
