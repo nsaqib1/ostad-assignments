@@ -24,16 +24,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final AuthController _authController = Get.find<AuthController>();
   final EditProfileController _editProfileController = Get.find<EditProfileController>();
   final PhotoPickerController _photoPickerController = Get.find<PhotoPickerController>();
 
   @override
   void initState() {
     super.initState();
-    _emailController.text = AuthController.user?.email ?? "";
-    _firstNameController.text = AuthController.user?.firstName ?? "";
-    _lastNameController.text = AuthController.user?.lastName ?? "";
-    _mobileController.text = AuthController.user?.mobile ?? "";
+    _emailController.text = _authController.user?.email ?? "";
+    _firstNameController.text = _authController.user?.firstName ?? "";
+    _lastNameController.text = _authController.user?.lastName ?? "";
+    _mobileController.text = _authController.user?.mobile ?? "";
   }
 
   @override

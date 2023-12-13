@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager_project_getx/ui/controllers/auth_controller.dart';
 import 'package:task_manager_project_getx/ui/screens/login_screen.dart';
 
@@ -22,72 +23,62 @@ class ProfileSummeryBar extends StatefulWidget {
 }
 
 class _ProfileSummeryBarState extends State<ProfileSummeryBar> {
+  final AuthController _authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: widget.enableOnTap
-          ? () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditProfileScreen(),
+    return GetBuilder<AuthController>(
+      builder: (controller) => ListTile(
+        onTap: widget.enableOnTap
+            ? () {
+                Get.to(const EditProfileScreen());
+              }
+            : null,
+        leading: CircleAvatar(
+          child: photo == null
+              ? const Icon(Icons.person)
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.memory(
+                    photo!,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
                 ),
-              );
-            }
-          : null,
-      leading: CircleAvatar(
-        child: photo == null
-            ? const Icon(Icons.person)
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.memory(
-                  photo!,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              ),
-      ),
-      title: Text(
-        fullname,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
         ),
-      ),
-      subtitle: Text(
-        email,
-        style: const TextStyle(color: Colors.white),
-      ),
-      tileColor: Colors.green,
-      trailing: IconButton(
-        onPressed: () async {
-          await AuthController.clearAuthData();
-          if (mounted) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginScreen(),
-              ),
-              (route) => false,
-            );
-          }
-        },
-        icon: const Icon(Icons.logout),
+        title: Text(
+          fullname,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        subtitle: Text(
+          email,
+          style: const TextStyle(color: Colors.white),
+        ),
+        tileColor: Colors.green,
+        trailing: IconButton(
+          onPressed: () async {
+            await AuthController.clearAuthData();
+            Get.offAll(const LoginScreen());
+          },
+          icon: const Icon(Icons.logout),
+        ),
       ),
     );
   }
 
   String get fullname {
-    final user = AuthController.user;
+    final user = _authController.user;
     return "${user?.firstName ?? ""} ${user?.lastName ?? ""}";
   }
 
   String get email {
-    return AuthController.user?.email ?? "";
+    return _authController.user?.email ?? "";
   }
 
   Uint8List? get photo {
-    final String? userPhoto = AuthController.user?.photo;
+    final String? userPhoto = _authController.user?.photo;
     if (userPhoto == null) return null;
     try {
       Uint8List imageBytes = const Base64Decoder().convert(userPhoto);

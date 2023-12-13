@@ -50,13 +50,14 @@ class EditProfileController extends GetxController {
     _updateProfileInProgress = false;
     update();
     if (response.isSuccess) {
-      AuthController.updateUserInformation(
+      final authController = Get.find<AuthController>();
+      authController.updateUserInformation(
         UserModel(
           email: email,
           firstName: firstName,
           lastName: lastName,
           mobile: mobile,
-          photo: photoInBase64 ?? AuthController.user?.photo,
+          photo: photoInBase64 ?? authController.user?.photo,
         ),
       );
       result = true;

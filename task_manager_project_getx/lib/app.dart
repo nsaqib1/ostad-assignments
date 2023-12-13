@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager_project_getx/ui/controllers/add_new_task_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/auth_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/cancelled_tasks_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/completed_tasks_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/edit_profile_controller.dart';
@@ -55,6 +56,7 @@ class TaskManagerApp extends StatelessWidget {
 class ControllerBinder extends Bindings {
   @override
   void dependencies() {
+    Get.put(AuthController());
     Get.put(LoginController());
     Get.put(NewTaskController());
     Get.put(TaskItemController());

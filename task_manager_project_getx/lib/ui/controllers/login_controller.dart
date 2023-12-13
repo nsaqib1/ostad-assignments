@@ -29,7 +29,7 @@ class LoginController extends GetxController {
     update();
 
     if (response.isSuccess) {
-      AuthController.saveUserInformation(
+      Get.find<AuthController>().saveUserInformation(
         response.jsonResponse["token"],
         UserModel.fromJson(
           response.jsonResponse["data"],
