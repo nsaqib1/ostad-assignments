@@ -5,6 +5,7 @@ import 'package:task_manager_project_getx/ui/controllers/auth_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/cancelled_tasks_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/completed_tasks_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/edit_profile_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/forgot_password_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/login_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/photo_picker_controller.dart';
@@ -65,5 +66,6 @@ class ControllerBinder extends Bindings {
     Get.put(CompletedTasksController());
     Get.put(EditProfileController());
     Get.put(PhotoPickerController());
+    Get.put(ForgotPasswordController());
   }
 }
