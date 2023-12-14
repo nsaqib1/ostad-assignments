@@ -23,7 +23,7 @@ class ForgotPasswordController extends GetxController {
     _verifyEmailInProgress = false;
     update();
 
-    if (response.jsonResponse["status"] == "success") {
+    if (response.jsonResponse["status"] == "success" && response.statusCode == 200) {
       result = true;
     } else {
       _errorMessage = response.jsonResponse["data"] ?? "Error!";
