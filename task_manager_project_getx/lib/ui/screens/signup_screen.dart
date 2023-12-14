@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../data/network_caller/network_caller.dart';
-import '../../data/network_caller/network_response.dart';
-import '../../data/utils/urls.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project_getx/ui/controllers/signup_controller.dart';
 import '../utils/form_validators.dart';
 import '../widgets/body_background.dart';
 import '../widgets/snackbar_builder.dart';
@@ -22,7 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _signUpInProgress = false;
+  final SignupController _signupController = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
@@ -123,14 +121,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(
                       width: double.infinity,
-                      child: Visibility(
-                        visible: _signUpInProgress == false,
-                        replacement: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: _signUp,
-                          child: const Icon(Icons.arrow_circle_right_outlined),
+                      child: GetBuilder<SignupController>(
+                        builder: (controller) => Visibility(
+                          visible: controller.signUpInProgress == false,
+                          replacement: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: _signUp,
+                            child: const Icon(Icons.arrow_circle_right_outlined),
+                          ),
                         ),
                       ),
                     ),
@@ -150,7 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: const Text(
                             'Login',
@@ -170,31 +170,24 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _signUp() async {
-    if (_formKey.currentState!.validate()) {
-      _signUpInProgress = true;
+    if (_formKey.currentState!.validate() == false) return;
+
+    final bool response = await _signupController.signUp(
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      mobile: _mobileController.text.trim(),
+    );
+
+    if (response) {
+      _clearTextFields();
       if (mounted) {
-        setState(() {});
+        showSnackMessage(context, 'Account has been created! Please login.');
       }
-      final NetworkResponse response = await NetworkCaller().postRequest(Urls.registration, body: {
-        "firstName": _firstNameController.text.trim(),
-        "lastName": _lastNameController.text.trim(),
-        "email": _emailController.text.trim(),
-        "password": _passwordController.text,
-        "mobile": _mobileController.text.trim(),
-      });
-      _signUpInProgress = false;
+    } else {
       if (mounted) {
-        setState(() {});
-      }
-      if (response.isSuccess) {
-        _clearTextFields();
-        if (mounted) {
-          showSnackMessage(context, 'Account has been created! Please login.');
-        }
-      } else {
-        if (mounted) {
-          showSnackMessage(context, 'Account creation failed! Please try again.', true);
-        }
+        showSnackMessage(context, 'Account creation failed! Please try again.', true);
       }
     }
   }

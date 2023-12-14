@@ -12,6 +12,7 @@ import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dar
 import 'package:task_manager_project_getx/ui/controllers/otp_verification_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/photo_picker_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/reset_password_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/signup_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/task_item_controller.dart';
 import 'ui/screens/splash_screen.dart';
 
@@ -73,5 +74,6 @@ class ControllerBinder extends Bindings {
     Get.put(ForgotPasswordController());
     Get.put(OtpVerificationController());
     Get.put(ResetPasswordController());
+    Get.put(SignupController());
   }
 }
