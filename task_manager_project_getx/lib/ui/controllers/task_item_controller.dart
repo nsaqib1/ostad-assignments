@@ -4,7 +4,7 @@ import '../../data/network_caller/network_caller.dart';
 import '../../data/utils/urls.dart';
 
 class TaskItemController extends GetxController {
-  Future<bool> updateTaskStatus(String status, String id) async {
+  Future<bool> updateTaskStatus(String id, String status) async {
     bool result = false;
     final response = await NetworkCaller().getRequest(Urls.updateTaskStatus(id, status));
     if (response.isSuccess) {

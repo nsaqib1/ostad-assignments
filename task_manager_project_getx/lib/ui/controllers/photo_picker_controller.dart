@@ -9,4 +9,9 @@ class PhotoPickerController extends GetxController {
     _photo = file;
     update();
   }
+
+  void clear() {
+    _photo = null;
+    update();
+  }
 }

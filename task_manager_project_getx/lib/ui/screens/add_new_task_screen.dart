@@ -140,8 +140,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     _subjectController.dispose();
     _descriptionController.dispose();
-    super.dispose();
   }
 }

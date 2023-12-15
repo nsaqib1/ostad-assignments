@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager_project_getx/ui/controllers/main_bottom_nav_screen.dart';
+import 'package:task_manager_project_getx/ui/controllers/main_bottom_nav_controller.dart';
 
 import 'cancelled_tasks_screen.dart';
 import 'completed_tasks_screen.dart';

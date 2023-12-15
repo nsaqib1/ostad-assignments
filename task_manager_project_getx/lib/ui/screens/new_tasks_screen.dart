@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/task_count_summery_controller.dart';
+import 'package:task_manager_project_getx/ui/widgets/snackbar_builder.dart';
 
 import '../../data/models/task_count.dart';
 import '../widgets/profile_summery_bar.dart';
@@ -17,12 +19,13 @@ class NewTasksScreen extends StatefulWidget {
 
 class _NewTasksScreenState extends State<NewTasksScreen> {
   final NewTaskController _newTaskController = Get.find<NewTaskController>();
+  final TaskCountSummeryController _taskCountSummeryController = Get.find<TaskCountSummeryController>();
 
   @override
   void initState() {
     super.initState();
-    _newTaskController.getTaskCountSummaryList();
-    _newTaskController.getNewTaskList();
+    _getTaskCountSummaryList();
+    _getNewTaskList();
   }
 
   @override
@@ -32,11 +35,11 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
         toolbarHeight: 0,
         elevation: 0,
       ),
-      body: GetBuilder<NewTaskController>(
-        builder: (controller) => Column(
-          children: [
-            const ProfileSummeryBar(),
-            Visibility(
+      body: Column(
+        children: [
+          const ProfileSummeryBar(),
+          GetBuilder<TaskCountSummeryController>(
+            builder: (controller) => Visibility(
               visible: controller.getTaskCountSummaryInProgress == false && controller.taskCountSummaryListModel.taskCountList != null,
               replacement: const LinearProgressIndicator(),
               child: SizedBox(
@@ -56,8 +59,10 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
                 ),
               ),
             ),
-            Expanded(
-              child: Visibility(
+          ),
+          Expanded(
+            child: GetBuilder<NewTaskController>(
+              builder: (controller) => Visibility(
                 visible: controller.getNewTaskInProgress == false,
                 replacement: const Center(
                   child: CircularProgressIndicator(),
@@ -84,8 +89,8 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -101,42 +106,27 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   }
 
   Future<void> refreshScreen() async {
-    _newTaskController.getNewTaskList();
-    _newTaskController.getTaskCountSummaryList();
+    _getNewTaskList();
+    _getTaskCountSummaryList();
   }
 
-  // Future<void> getTaskCountSummaryList() async {
-  //   getTaskCountSummaryInProgress = true;
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  //   final NetworkResponse response = await NetworkCaller().getRequest(Urls.getTaskStatusCount);
-  //   if (response.isSuccess) {
-  //     taskCountSummaryListModel = TaskCountSummaryListModel.fromJson(response.jsonResponse);
-  //   }
-  //   getTaskCountSummaryInProgress = false;
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
+  Future<void> _getNewTaskList() async {
+    final bool response = await _newTaskController.getNewTaskList();
 
-  // Future<void> getNewTaskList() async {
-  //   getNewTaskInProgress = true;
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
+    if (response == false) {
+      if (mounted) {
+        showSnackMessage(context, "Error getting new task list! Try again");
+      }
+    }
+  }
 
-  //   final NetworkResponse response = await NetworkCaller().getRequest(
-  //     Urls.getNewTasks,
-  //   );
+  Future<void> _getTaskCountSummaryList() async {
+    final bool response = await _taskCountSummeryController.getTaskCountSummaryList();
 
-  //   if (response.isSuccess) {
-  //     taskListModel = TaskListModel.fromJson(response.jsonResponse);
-  //   }
-
-  //   getNewTaskInProgress = false;
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
+    if (response == false) {
+      if (mounted) {
+        showSnackMessage(context, "Error getting task count summery! Try again");
+      }
+    }
+  }
 }

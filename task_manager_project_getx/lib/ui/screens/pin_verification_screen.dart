@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:task_manager_project_getx/ui/controllers/otp_verification_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/pin_verification_controller.dart';
 import 'package:task_manager_project_getx/ui/widgets/snackbar_builder.dart';
 
 import '../widgets/body_background.dart';
@@ -18,7 +18,7 @@ class PinVerificationScreen extends StatefulWidget {
 }
 
 class _PinVerificationScreenState extends State<PinVerificationScreen> {
-  final OtpVerificationController _otpVerificationController = Get.find<OtpVerificationController>();
+  final PinVerificationController _otpVerificationController = Get.find<PinVerificationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: GetBuilder<OtpVerificationController>(
+                    child: GetBuilder<PinVerificationController>(
                       builder: (controller) => Visibility(
                         visible: controller.otpVerificationInProgress == false,
                         replacement: const Center(

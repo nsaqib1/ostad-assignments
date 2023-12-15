@@ -161,6 +161,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
 
     if (response) {
+      _photoPickerController.clear();
       if (mounted) {
         showSnackMessage(context, 'Update profile success!');
       }

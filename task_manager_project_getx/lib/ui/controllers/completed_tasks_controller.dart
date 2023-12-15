@@ -14,6 +14,7 @@ class CompletedTasksController extends GetxController {
 
   set getCompletedTaskInProgress(bool value) {
     _getCompletedTaskInProgress = value;
+    update();
   }
 
   Future<bool> getCompletedTaskList() async {

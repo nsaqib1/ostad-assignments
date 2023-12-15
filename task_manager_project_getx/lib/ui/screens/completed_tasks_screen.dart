@@ -17,8 +17,8 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
 
   @override
   void initState() {
-    getCompletedTaskList();
     super.initState();
+    getCompletedTaskList();
   }
 
   @override
@@ -70,7 +70,7 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
     final bool response = await _completedTasksController.getCompletedTaskList();
     if (response == false) {
       if (mounted) {
-        showSnackMessage(context, "Error! Could Not Get Data");
+        showSnackMessage(context, "Error! Could Not Get The Data");
       }
     }
   }

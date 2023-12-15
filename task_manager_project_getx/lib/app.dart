@@ -7,12 +7,14 @@ import 'package:task_manager_project_getx/ui/controllers/completed_tasks_control
 import 'package:task_manager_project_getx/ui/controllers/edit_profile_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/forgot_password_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/login_controller.dart';
-import 'package:task_manager_project_getx/ui/controllers/main_bottom_nav_screen.dart';
+import 'package:task_manager_project_getx/ui/controllers/main_bottom_nav_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/new_task_controller.dart';
-import 'package:task_manager_project_getx/ui/controllers/otp_verification_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/pin_verification_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/photo_picker_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/progress_task_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/reset_password_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/signup_controller.dart';
+import 'package:task_manager_project_getx/ui/controllers/task_count_summery_controller.dart';
 import 'package:task_manager_project_getx/ui/controllers/task_item_controller.dart';
 import 'ui/screens/splash_screen.dart';
 
@@ -65,14 +67,16 @@ class ControllerBinder extends Bindings {
     Get.put(MainBottomNavController());
     Get.put(LoginController());
     Get.put(NewTaskController());
+    Get.put(TaskCountSummeryController());
     Get.put(TaskItemController());
+    Get.put(ProgressTaskController());
     Get.put(AddNewTaskController());
     Get.put(CancelledTasksController());
     Get.put(CompletedTasksController());
     Get.put(EditProfileController());
     Get.put(PhotoPickerController());
     Get.put(ForgotPasswordController());
-    Get.put(OtpVerificationController());
+    Get.put(PinVerificationController());
     Get.put(ResetPasswordController());
     Get.put(SignupController());
   }

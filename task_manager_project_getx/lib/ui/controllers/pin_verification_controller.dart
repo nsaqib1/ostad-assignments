@@ -4,7 +4,7 @@ import '../../data/network_caller/network_caller.dart';
 import '../../data/network_caller/network_response.dart';
 import '../../data/utils/urls.dart';
 
-class OtpVerificationController extends GetxController {
+class PinVerificationController extends GetxController {
   String _otp = "";
   bool _otpComplete = false;
   bool _otpVerificationInProgress = false;
