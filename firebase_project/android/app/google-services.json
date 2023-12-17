@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "951579532657",
+    "project_id": "vintage4-4e212",
+    "storage_bucket": "vintage4-4e212.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951579532657:android:50aa2bed8705c6e7d2ead0",
+        "android_client_info": {
+          "package_name": "com.example.firebase_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951579532657-74qqjtsmjtrg9kqcqgoarn5trpt4f6ou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdLkJ02gQaaG5eCyJI5JTVsFuyL30ymFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951579532657-4or866cec754ncbo69cpvtd37706215b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "951579532657-7h98q8g3fsd9qa260bgg5fiftep3606r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vinApp4"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951579532657:android:09853d397ea903a8d2ead0",
+        "android_client_info": {
+          "package_name": "com.example.flutter_mychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951579532657-ddktp9vcsfle0tpcb0k9cnv27dtbvug9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_mychat",
+            "certificate_hash": "308b59a929b1e06d04c08f1d7d9d74141e7ca8be"
+          }
+        },
+        {
+          "client_id": "951579532657-74qqjtsmjtrg9kqcqgoarn5trpt4f6ou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdLkJ02gQaaG5eCyJI5JTVsFuyL30ymFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951579532657-4or866cec754ncbo69cpvtd37706215b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "951579532657-7h98q8g3fsd9qa260bgg5fiftep3606r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vinApp4"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
