@@ -1,16 +1,7 @@
-# firebase_project
+# Firebase Project
 
-A new Flutter project.
+## Screenshots
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="screenshots/Screenshot_2023-12-17-18-32-45-58_538f4ad013ac3d5ef1dffd3d02acf6ed.jpg" width="280">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="screenshots/Screenshot_2023-12-17-18-32-49-75_538f4ad013ac3d5ef1dffd3d02acf6ed.jpg" width="280">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="screenshots/Screenshot_2023-12-17-18-32-53-69_538f4ad013ac3d5ef1dffd3d02acf6ed.jpg" width="280">&nbsp;&nbsp;&nbsp;&nbsp;
