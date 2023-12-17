@@ -28,13 +28,13 @@ class MatchScoreCard extends StatelessWidget {
         children: [
           Text(
             matchModel.matchName,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: TextStyle(fontSize: 28, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 5),
           Text(
             matchModel.goals,
             style: const TextStyle(
-              fontSize: 28,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
           ),

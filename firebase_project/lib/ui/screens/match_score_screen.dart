@@ -1,3 +1,4 @@
+import 'package:firebase_project/data/firebase/firebase_api.dart';
 import 'package:firebase_project/data/models/match_model.dart';
 import 'package:firebase_project/ui/widgets/match_scrore_card.dart';
 import 'package:flutter/material.dart';
@@ -12,16 +13,13 @@ class MatchScoreScreen extends StatefulWidget {
 }
 
 class _MatchScoreScreenState extends State<MatchScoreScreen> {
-  late final MatchModel _matchModel;
+  bool _getMatchScoreInProgress = false;
+  MatchModel? _matchModel;
+
   @override
   void initState() {
     super.initState();
-    _matchModel = MatchModel(
-      matchName: "matchName",
-      goals: "2 : 3",
-      elapsedTime: "67:32",
-      totalTime: "90:00",
-    );
+    _getMatchScore(widget.matchId);
   }
 
   @override
@@ -30,13 +28,48 @@ class _MatchScoreScreenState extends State<MatchScoreScreen> {
       appBar: AppBar(
         title: Text(widget.matchId),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            MatchScoreCard(matchModel: _matchModel),
-          ],
+      body: Visibility(
+        visible: _getMatchScoreInProgress == false,
+        replacement: const LinearProgressIndicator(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _matchModel == null ? const SizedBox.shrink() : MatchScoreCard(matchModel: _matchModel!),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _getMatchScore(String id) async {
+    _getMatchScoreInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    final response = await FirebaseAPI.getMatchScore(id);
+
+    _getMatchScoreInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
+
+    if (response == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red.shade900,
+            content: const Text("Error! Could Not Load Data. Check Your Network Connection And Try Again!"),
+          ),
+        );
+      }
+      return;
+    }
+
+    _matchModel = response;
+    if (mounted) {
+      setState(() {});
+    }
   }
 }

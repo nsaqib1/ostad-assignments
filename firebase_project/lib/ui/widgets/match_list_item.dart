@@ -13,11 +13,9 @@ class MatchListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       title: Text(matchName),
-      trailing: IconButton(
-        onPressed: onTap,
-        icon: const Icon(Icons.arrow_forward),
-      ),
+      trailing: const Icon(Icons.arrow_forward),
     );
   }
 }
