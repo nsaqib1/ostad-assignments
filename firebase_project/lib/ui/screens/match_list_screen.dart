@@ -66,7 +66,7 @@ class _MatchListScreenState extends State<MatchListScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.red.shade900,
-            content: const Text("Error! Could Not Load Data. Check Your Network Connection And Try Again!"),
+            content: const Text("Error! Could Not Load The Data."),
           ),
         );
       }
