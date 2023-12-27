@@ -48,8 +48,4 @@ abstract class LocationServices {
       throw "Permission Denied Forever!";
     }
   }
-
-  static Future<Position> getCurrentPosition() async {
-    return await Geolocator.getCurrentPosition();
-  }
 }
