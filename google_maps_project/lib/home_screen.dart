@@ -16,7 +16,47 @@ class _HomeScreenState extends State<HomeScreen> {
   final LatLng _initialPosition = const LatLng(23.7808186, 90.3372882);
   final List<LatLng> _points = [];
 
-  void _listenAndUpdateLocationOnMap() async {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Real-Time Location Tracker"),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: _initialPosition,
+          zoom: 8,
+        ),
+        onMapCreated: (GoogleMapController controller) {
+          _mapController = controller;
+          _listenAndUpdateLocationOnMap();
+        },
+        markers: {
+          Marker(
+            markerId: const MarkerId("marker"),
+            infoWindow: _points.isNotEmpty
+                ? InfoWindow(
+                    title: "My current location",
+                    snippet: "${_points.last.latitude}, ${_points.last.longitude}",
+                  )
+                : const InfoWindow(),
+            position: _points.isEmpty ? _initialPosition : _points.last,
+            visible: _points.isEmpty ? false : true,
+          ),
+        },
+        polylines: {
+          Polyline(
+            polylineId: const PolylineId("polyline"),
+            points: _points,
+            color: Colors.blue,
+          ),
+        },
+        compassEnabled: true,
+      ),
+    );
+  }
+
+  Future<void> _listenAndUpdateLocationOnMap() async {
     // Getting Permission
     try {
       await LocationServices.getPermission();
@@ -56,45 +96,5 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     super.dispose();
     _streamSubscription.cancel();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Real-Time Location Tracker"),
-      ),
-      body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: _initialPosition,
-          zoom: 8,
-        ),
-        onMapCreated: (GoogleMapController controller) {
-          _mapController = controller;
-          _listenAndUpdateLocationOnMap();
-        },
-        markers: {
-          Marker(
-            markerId: const MarkerId("marker"),
-            infoWindow: _points.isNotEmpty
-                ? InfoWindow(
-                    title: "My current location",
-                    snippet: "${_points.last.latitude}, ${_points.last.longitude}",
-                  )
-                : const InfoWindow(),
-            position: _points.isEmpty ? _initialPosition : _points.last,
-            visible: _points.isEmpty ? false : true,
-          ),
-        },
-        polylines: {
-          Polyline(
-            polylineId: const PolylineId("polyline"),
-            points: _points,
-            color: Colors.blue,
-          ),
-        },
-        compassEnabled: true,
-      ),
-    );
   }
 }
